@@ -1,0 +1,20 @@
+[package]
+name = "cvtl"
+version = "0.1.0"
+edition = "2024"
+description = "Volatile: thin composition of Memory and Valkey storage"
+license-file = "LICENSE.md"
+repository = "https://github.com/corbet-libs/cvtl"
+publish = false
+
+[dependencies]
+cmmr = { git = "https://github.com/corbet-foss/cmmr", rev = "9e329c895ed886d59d49719f4ef699c27a758bdd" }
+cvlk = { git = "https://github.com/corbet-foss/cvlk", rev = "c2e24325c9ad7ec595d26c81ee5417c23b0ac072" }
+
+[dev-dependencies]
+cmmr = { git = "https://github.com/corbet-foss/cmmr", rev = "9e329c895ed886d59d49719f4ef699c27a758bdd", features = ["conformance"] }
+redis = { version = "1", default-features = false, features = ["tokio-comp"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+
+[lints.rust]
+unsafe_code = "forbid"
