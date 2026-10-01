@@ -31,7 +31,10 @@ async fn identical_suite_through_both_facade_variants() {
     assert_eq!(format!("{a:?}"), "Volatile(Memory)");
     let bad: Result<Volatile<_>, _> = Volatile::memory(
         Scope::new("bad", "facade").unwrap(),
-        Limits { records: 0, ..limits() },
+        Limits {
+            records: 0,
+            ..limits()
+        },
         clock.clone(),
     );
     assert!(matches!(bad, Err(Error::Invalid)));
@@ -66,7 +69,10 @@ async fn identical_suite_through_both_facade_variants() {
     assert_eq!(format!("{a:?}"), "Volatile(Valkey)");
     assert!(matches!(
         Volatile::valkey(network, Scope::new("bad", "facade").unwrap(),
-            Limits { records: 0, ..limits() }, clock).await,
+            Limits {
+            records: 0,
+            ..limits()
+        }, clock).await,
         Err(Error::Invalid)
     ));
     // Closing one cloned facade closes its child; no independent facade state.
