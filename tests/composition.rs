@@ -24,7 +24,17 @@ async fn identical_suite_through_both_facade_variants() {
         clock.clone(),
     )
     .unwrap();
+    assert!(a.warnings().is_empty());
+    assert_eq!(a.clone().state(), State::Ready);
+    assert_eq!(a.maintain().await.unwrap(), 0);
     run(&a, &b, &clock).await;
+    assert_eq!(format!("{a:?}"), "Volatile(Memory)");
+    let bad: Result<Volatile<_>, _> = Volatile::memory(
+        Scope::new("bad", "facade").unwrap(),
+        Limits { records: 0, ..limits() },
+        clock.clone(),
+    );
+    assert!(matches!(bad, Err(Error::Invalid)));
     clock.set(start);
     let connection =
         redis::Client::open(std::env::var("VALKEY_URL").expect("disposable Valkey required"))
@@ -42,14 +52,23 @@ async fn identical_suite_through_both_facade_variants() {
     .await
     .unwrap();
     let b = Volatile::valkey(
-        network,
+        network.clone(),
         Scope::new("valkey-b", "facade").unwrap(),
         limits(),
         clock.clone(),
     )
     .await
     .unwrap();
+    assert!(a.warnings().is_empty());
+    assert_eq!(a.clone().state(), State::Ready);
+    assert_eq!(a.maintain().await.unwrap(), 0);
     run(&a, &b, &clock).await;
+    assert_eq!(format!("{a:?}"), "Volatile(Valkey)");
+    assert!(matches!(
+        Volatile::valkey(network, Scope::new("bad", "facade").unwrap(),
+            Limits { records: 0, ..limits() }, clock).await,
+        Err(Error::Invalid)
+    ));
     // Closing one cloned facade closes its child; no independent facade state.
     assert_eq!(a.clone().state(), State::Closed);
 }
