@@ -23,20 +23,25 @@ jobs:
     env:
       VALKEY_URL: redis://127.0.0.1:6379/
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87
         with:
+          toolchain: stable
           components: rustfmt, clippy
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@49a0bdc70d2e1b713ca9e2869b211fcce03d3c1c
         with:
           cache-on-failure: true
       - run: rustc --version
-      - run: cargo generate-lockfile
       - run: cargo metadata --locked --all-features --format-version 1 > dependency-metadata.json
+      - run: python3 .github/check-first-party.py
       - run: cargo fmt --all --check
       - run: cargo clippy --locked --all-targets -- -D warnings
       - run: cargo test --locked -- --nocapture
-      - uses: actions/upload-artifact@v4
+      - uses: taiki-e/install-action@83ac0ad63c0167e6f06796fab0fce28db1bf3db0
+        with:
+          tool: cargo-deny
+      - run: cargo deny --locked check advisories
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: dependency-lock
