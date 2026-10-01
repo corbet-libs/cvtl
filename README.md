@@ -19,3 +19,9 @@ for memory services, supply one shared `cthl::MemoryStore`.
 
 [Implemented contract](docs/CONTRACT.md). CI runs the same cmmr conformance suite
 through both variants against memory and disposable Valkey. FSL-1.1-ALv2.
+
+## Continuous verification
+
+Dependency updates follow main and are tested against one CI-resolved lockfile.
+Line and branch coverage target 100%; failures remain blocking. See
+[the coverage contract](docs/COVERAGE.md) for measurement and exclusions.
