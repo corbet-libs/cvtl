@@ -108,7 +108,7 @@ dependencies = [
 [[package]]
 name = "cvlk"
 version = "0.1.0"
-source = "git+https://github.com/corbet-foss/cvlk?rev=61bde6ee122cd4222e6a82547352e03ebc40469f#61bde6ee122cd4222e6a82547352e03ebc40469f"
+source = "git+https://github.com/corbet-foss/cvlk?rev=e2c199b4356d6f19e2b174279d1ca95a42a227b1#e2c199b4356d6f19e2b174279d1ca95a42a227b1"
 dependencies = [
  "cmmr",
  "cthl",
