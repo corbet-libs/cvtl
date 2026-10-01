@@ -1,7 +1,7 @@
 # Coverage contract
 
 CI targets 100% of reachable production lines and branches. Stable Rust runs
-the existing native and wasm checks. Nightly Rust is used only for LLVM branch
+the real native server checks. Nightly Rust is used only for LLVM branch
 instrumentation, which currently requires it. Both jobs use the same resolved
 Cargo.lock snapshot; all build and test commands after resolution use --locked.
 
@@ -13,8 +13,7 @@ code. No production source exclusions are currently approved.
 
 A failing gate is missing evidence, not permission to lower the threshold or
 change domain behavior. Add meaningful failure and round-trip tests. Document
-any genuinely unreachable defensive branch precisely before excluding it. Native
-coverage does not establish browser execution; keep the actual wasm vectors.
+any genuinely unreachable defensive branch precisely before excluding it. This server adapter makes no browser coverage claim.
 
 First-party dependencies follow main. Their resolved full revisions remain in
 Cargo.lock, with exactly one source per first-party crate. Dependabot maintains

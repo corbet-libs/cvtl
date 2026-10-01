@@ -43,6 +43,15 @@ impl<C: Clock, N: Network> Volatile<C, N> {
             cvlk::Valkey::open(network, scope, limits, clock).await?,
         )))
     }
+    /// Recheck the selected backend after an uncertain mutation or during the
+    /// service maintenance probe. Memory is a no-op; it never revives a closed
+    /// child. Valkey requires the same backend run ID and never retries writes.
+    pub async fn reopen(&self) -> Result<Vec<Warning>, Error> {
+        match self {
+            Self::Memory(_) => Ok(Vec::new()),
+            Self::Valkey(s) => s.reopen().await,
+        }
+    }
     pub fn warnings(&self) -> &[Warning] {
         match self {
             Self::Memory(_) => &[],
