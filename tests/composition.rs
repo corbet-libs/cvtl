@@ -68,11 +68,16 @@ async fn identical_suite_through_both_facade_variants() {
     run(&a, &b, &clock).await;
     assert_eq!(format!("{a:?}"), "Volatile(Valkey)");
     assert!(matches!(
-        Volatile::valkey(network, Scope::new("bad", "facade").unwrap(),
+        Volatile::valkey(
+            network,
+            Scope::new("bad", "facade").unwrap(),
             Limits {
-            records: 0,
-            ..limits()
-        }, clock).await,
+                records: 0,
+                ..limits()
+            },
+            clock,
+        )
+        .await,
         Err(Error::Invalid)
     ));
     // Closing one cloned facade closes its child; no independent facade state.
