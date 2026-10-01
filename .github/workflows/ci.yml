@@ -16,18 +16,21 @@ jobs:
         persist-credentials: false
     - uses: dtolnay/rust-toolchain@stable
     - name: Resolve one fresh dependency snapshot
-      run: |-
-        cargo update
+      run: 'cargo update
+
         rustc --version > resolver.txt
+
         cargo --version >> resolver.txt
+
         date -u +%FT%TZ >> resolver.txt
-        sha256sum Cargo.lock >> resolver.txt
+
+        sha256sum Cargo.lock >> resolver.txt'
     - uses: actions/upload-artifact@v4
       with:
         name: resolved-lock
-        path: |-
-          Cargo.lock
-          resolver.txt
+        path: 'Cargo.lock
+
+          resolver.txt'
         retention-days: 7
   check:
     runs-on: ubuntu-latest
@@ -37,7 +40,8 @@ jobs:
         image: valkey/valkey:8.1
         ports:
         - 6379:6379
-        options: --health-cmd "valkey-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10
+        options: --health-cmd "valkey-cli ping" --health-interval 5s --health-timeout
+          3s --health-retries 10
     env:
       VALKEY_URL: redis://127.0.0.1:6379/
     steps:
@@ -58,7 +62,15 @@ jobs:
     - run: rustc --version
     - run: cargo metadata --locked --all-features --format-version 1 > dependency-metadata.json
     - run: python3 .github/check-first-party.py
-    - run: cargo fmt --all --check
+    - name: Check formatting and retain a repair patch
+      run: 'cargo fmt --all
+
+        git diff --exit-code -- ''*.rs'' > format.patch'
+    - uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: format
+        path: format.patch
     - run: cargo clippy --locked --all-targets -- -D warnings
     - run: cargo test --locked -- --nocapture
     - uses: taiki-e/install-action@83ac0ad63c0167e6f06796fab0fce28db1bf3db0
@@ -69,9 +81,11 @@ jobs:
       if: always()
       with:
         name: dependency-lock
-        path: |
-          Cargo.lock
+        path: 'Cargo.lock
+
           dependency-metadata.json
+
+          '
     needs:
     - resolve
   dependency-policy:
@@ -111,30 +125,38 @@ jobs:
     - uses: taiki-e/install-action@v2
       with:
         tool: cargo-llvm-cov
-    - run: |-
-        rustc --version
-        cargo llvm-cov --version
+    - run: 'rustc --version
+
+        cargo llvm-cov --version'
     - name: Measure real native round trips and failure paths
-      run: cargo llvm-cov --locked --workspace --all-features --branch --no-cfg-coverage --no-cfg-coverage-nightly
-        --ignore-filename-regex '/tests/' --json --output-path coverage.json
+      run: cargo llvm-cov --locked --workspace --all-features --branch --no-cfg-coverage
+        --no-cfg-coverage-nightly --ignore-filename-regex '/tests/' --json --output-path
+        coverage.json
       env: {}
+    - name: Retain source-level diagnostics
+      run: cargo llvm-cov report --locked --branch --ignore-filename-regex '/tests/'
+        --lcov --output-path coverage.lcov
     - name: Require complete line and branch coverage
       run: python3 .github/check-coverage.py coverage.json
     - uses: actions/upload-artifact@v4
       if: always()
       with:
         name: coverage
-        path: |-
-          coverage.json
+        path: 'coverage.json
+
           Cargo.lock
+
           resolver.txt
+
+          coverage.lcov'
         retention-days: 7
     services:
       valkey:
         image: valkey/valkey:8.1
         ports:
         - 6379:6379
-        options: --health-cmd "valkey-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10
+        options: --health-cmd "valkey-cli ping" --health-interval 5s --health-timeout
+          3s --health-retries 10
     env:
       VALKEY_URL: redis://127.0.0.1:6379/
 'on':

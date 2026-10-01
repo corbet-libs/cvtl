@@ -20,6 +20,10 @@ for memory services, supply one shared `cthl::MemoryStore`.
 [Implemented contract](docs/CONTRACT.md). CI runs the same cmmr conformance suite
 through both variants against memory and disposable Valkey. FSL-1.1-ALv2.
 
+## Scope
+
+Select and route the actual Memory or Valkey child at startup. Re-export the shared port and child readiness/warnings without a second store, fallback, identity, quota policy or member lifecycle.
+
 ## Continuous verification
 
 Dependency updates follow main and are tested against one CI-resolved lockfile.
