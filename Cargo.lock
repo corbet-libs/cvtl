@@ -62,7 +62,7 @@ checksum = "4e7648175b45a9a48536d676f68d918270699102aa8dab5496df06904c914600"
 [[package]]
 name = "cmmr"
 version = "0.1.0"
-source = "git+https://github.com/corbet-foss/cmmr?rev=8ae6a60d7d88c85e121a6cee292ea149afbd59b0#8ae6a60d7d88c85e121a6cee292ea149afbd59b0"
+source = "git+https://github.com/corbet-foss/cmmr?branch=main#6ec73e1f786934d4a0a4ff2d81baec60395feb30"
 dependencies = [
  "serde",
 ]
@@ -100,7 +100,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 [[package]]
 name = "cthl"
 version = "0.0.0"
-source = "git+https://github.com/corbet-foss/cthl?rev=a41533a255cefc0757078205bff87c03e6c7bbbe#a41533a255cefc0757078205bff87c03e6c7bbbe"
+source = "git+https://github.com/corbet-foss/cthl?branch=main#e719761a51795a115a969f50353df27f8c152bfd"
 dependencies = [
  "governor",
 ]
@@ -108,7 +108,7 @@ dependencies = [
 [[package]]
 name = "cvlk"
 version = "0.1.0"
-source = "git+https://github.com/corbet-foss/cvlk?rev=e2c199b4356d6f19e2b174279d1ca95a42a227b1#e2c199b4356d6f19e2b174279d1ca95a42a227b1"
+source = "git+https://github.com/corbet-foss/cvlk?branch=main#a72bf4c44df3ec821ef38e52e89dac72cdd1ed39"
 dependencies = [
  "cmmr",
  "cthl",
