@@ -4,7 +4,7 @@
 pub use cmmr::{
     Clock, Cursor, Deadline, Error, Limits, Page, Record, Revision, Scope, State, Store, Write,
 };
-pub use cvlk::{Network, RedisNetwork, ThrottleStore, Warning, cthl};
+pub use cvlk::{Network, RedisNetwork, StartupError, ThrottleStore, Warning, cthl};
 use std::sync::Arc;
 
 pub enum Volatile<C, N = RedisNetwork> {
