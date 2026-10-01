@@ -59,7 +59,7 @@ async fn identical_suite_through_both_facade_variants() {
     )
     .await
     .unwrap();
-    assert!(a.warnings().is_empty());
+    assert_eq!(a.warnings(), network.health().await.unwrap().warnings);
     assert_eq!(a.clone().state(), State::Ready);
     assert_eq!(a.maintain().await.unwrap(), 0);
     run(&a, &b, &clock).await;
